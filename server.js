@@ -1,39 +1,17 @@
-// let http = require("http")
-
-// let ourApp = http.CreateServer(function(req, res){
-//     res.end("Hello, and welcome to our website.")
-// })
-
-// ourApp.listen(3000);
-
-
-// var http = require('http');
-// http.createServer(function (req, res) {
-//   res.writeHead(200, {'Content-Type': 'text/plain'});
-
-//   if(req.url == "/"){
-//     res.write('Hello, and welcome to our website.');
-//     res.end();
-//   }
-//   if(req.url == "/about"){
-//     res.end("Thank you for visiting our about page.");
-//   }
-// }).listen(3000);
-
-// let express = require("express")
-// let app = express()
-// app.get('/', function(req, res){
-//     res.send(`
-//         <form action="/answer" method="POST">
-//             <p>What color is the sky on a clear and sunny day?</p>
-//             <input name="skyColor" autocomplete="off">
-//             <button>Submit Answer</button>
-//         </form>
-//     `)
-// })
-
 let express = require('express')
+let {MongoClient} = require('mongodb')
+
 let app = express()
+let db
+
+async function go(){
+  let client = new MongoClient('')
+  await client.connect()
+  db = client.db()
+  app.listen(3000)
+}
+
+go()
 
 app.use(express.urlencoded({extended: false}))
 
@@ -89,10 +67,8 @@ app.get('/', function(req, res){
   </html>`)
 })
 
-app.post('/create-item', function(req, res){
+app.post('/create-item', async function(req, res){
 //  console.log(req.body.item)
-
+  await db.collection('items').insertOne({text: req.body.item})
   res.send("Thank you for submitting the form.")
 })
-
-app.listen(3000)
