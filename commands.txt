@@ -1,0 +1,6 @@
+Node commands:
+
+npm init -y
+Node install express
+
+node test // run test.js
