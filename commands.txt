@@ -4,3 +4,10 @@ npm init -y
 Node install express
 
 node test // run test.js
+
+npm install nodemon
+nodeomn server
+
+//update package.json, add new script then
+npm run watch
+
